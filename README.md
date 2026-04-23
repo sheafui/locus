@@ -1,2 +1,4 @@
-# locus
-Locus is a SheafUI primitive that standardizes anchoring, positioning, and animations for native popover and dialog elements with a polyfill fallback layer.
+# Locus
+
+Locus is a **SheafUI primitive** that solves the anchoring problem using native browser primitives (`popover`, `dialog`) with a lightweight polyfill fallback and a built-in animation preset system.
+
