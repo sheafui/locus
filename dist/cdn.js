@@ -1295,11 +1295,14 @@
 
   // src/apis/anchor.ts
   var Anchor = class {
-    constructor({el, anchor, options, gap, offset: offset3, position, parentWidth}) {
+    constructor({el, anchor, options}) {
       this.state = false;
       this.el = el;
       this.anchor = anchor;
       this.options = options;
+      this.init();
+    }
+    init() {
     }
     handlePositioning() {
     }
