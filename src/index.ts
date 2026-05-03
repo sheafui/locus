@@ -1,7 +1,6 @@
 import type { Alpine } from "alpinejs";
 import { default as AlpineType } from "alpinejs";
-import { computePosition, flip, offset, shift, size } from '@floating-ui/dom';
-import { AnchorableOptions, PopoverableOptions } from "./types";
+import { AnchorOptions, PopoverOptions } from "./types";
 import Popover from "./apis/popover";
 import Anchor from "./apis/anchor";
 
@@ -9,16 +8,15 @@ export default function locus(Alpine: Alpine): void {
 
     Alpine.magic('locus', () => {
         return ({
-            popover: (options: PopoverableOptions): Popover => {
+            popover: (options: PopoverOptions): Popover => {
                 return new Popover(options);
             },
-            anchor: (options: AnchorableOptions): Anchor => {
+            anchor: (options: AnchorOptions): Anchor => {
                 return new Anchor(options)
             },
             animate: ({ strategy }: { strategy?: 'fade' | 'scale' } = {}) => { 
 
             }
-            // other mixins...
         });
     });
 

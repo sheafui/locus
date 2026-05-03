@@ -1322,8 +1322,8 @@
         ]
       }).then(({x, y}) => {
         Object.assign(this.anchor.style, {
-          x: `${x}px`,
-          y: `${y}px`
+          position: "absolute",
+          inset: `${y}px auto auto ${x}px`
         });
       });
     }

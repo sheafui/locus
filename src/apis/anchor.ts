@@ -1,14 +1,14 @@
 import { initTree } from "alpinejs";
-import { AnchorableOptions, PopoverableOptions } from "../types";
+import { AnchorOptions, PopoverOptions } from "../types";
 import { computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 
 export default class Anchor {
     anchor: HTMLElement
     el: HTMLElement
     state: boolean = false
-    options: AnchorableOptions['options']
+    options: AnchorOptions['options']
 
-    constructor({ el, anchor, options }: AnchorableOptions) {
+    constructor({ el, anchor, options }: AnchorOptions) {
         this.el = el;
         this.anchor = anchor;
         this.options = options;
@@ -18,7 +18,6 @@ export default class Anchor {
 
     init() {
         this.validatePlacement();
-
         computePosition(this.anchor, this.el, {
             middleware: [
                 flip(),
@@ -37,10 +36,9 @@ export default class Anchor {
             ]
         }).then(({ x, y }) => {
             Object.assign(this.anchor.style, {
-                x: `${x}px`,
-                y: `${y}px`
+                position: 'absolute', inset: `${y}px auto auto ${x}px`
             })
-        })
+        });
     }
 
     validatePlacement() {

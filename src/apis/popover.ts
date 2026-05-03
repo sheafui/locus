@@ -1,11 +1,11 @@
-import { PopoverableOptions } from "../types";
+import { PopoverOptions } from "../types";
 
 export default class Popover {
     el: HTMLElement
     state: boolean = false
     nestFor: string | undefined = undefined;
 
-    constructor({ el, nestedFor = undefined }: PopoverableOptions) {
+    constructor({ el, nestedFor = undefined }: PopoverOptions) {
         this.el = el;
         this.nestFor = nestedFor;
     }
