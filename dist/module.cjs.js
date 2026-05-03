@@ -1918,7 +1918,7 @@ var popover_default = Popover;
 
 // src/apis/anchor.ts
 var Anchor = class {
-  constructor({el, anchor, options}) {
+  constructor({el, anchor, options, gap, offset: offset2, position, parentWidth}) {
     this.state = false;
     this.el = el;
     this.anchor = anchor;

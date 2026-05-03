@@ -6,7 +6,7 @@ export default class Anchor {
     state: boolean = false
     options
 
-    constructor({ el, anchor, options }: AnchorableOptions) {
+    constructor({ el, anchor, options, gap, offset, position,parentWidth}: AnchorableOptions) {
         this.el = el;
         this.anchor = anchor;
         this.options = options;
