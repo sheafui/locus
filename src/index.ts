@@ -2,12 +2,13 @@ import type { Alpine } from "alpinejs";
 import { default as AlpineType } from "alpinejs";
 import { computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import Popoverable from "./behaviours/popoverable";
+import { PopoverableOptions } from "./types";
 
 export default function locus(Alpine: Alpine): void {
 
     Alpine.magic('locus', () => {
         return ({
-            popoverable: (options): unknown => {
+            popoverable: (options: PopoverableOptions): Popoverable => {
                 return new Popoverable(options);
             }
         })
