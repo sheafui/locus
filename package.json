@@ -4,7 +4,12 @@
     "description": "SheafUI anchoring primitive",
     "main": "src/index.js",
     "scripts": {
-        "test": "test"
+        "build": "node ./scripts/build.js",
+        "watch": "node ./scripts/build.js --watch",
+        "lint": "eslint .",
+        "tsc": "tsc",
+        "test": "vitest",
+        "lint-fix": "eslint . --fix"
     },
     "repository": {
         "type": "git",
