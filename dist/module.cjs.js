@@ -1889,7 +1889,42 @@ __export(exports, {
 
 // src/index.ts
 var import_dom = __toModule(require_floating_ui_dom_umd());
+
+// src/behaviours/popoverable.ts
+var Popoverable = class {
+  constructor({el, nestedFor = void 0}) {
+    this.state = false;
+    this.nestFor = void 0;
+    this.el = el;
+    this.nestFor = nestedFor;
+  }
+  setState(value) {
+    value ? this.show() : this.hide();
+  }
+  getState() {
+    return this.state;
+  }
+  toggle() {
+    this.el.togglePopover();
+  }
+  show() {
+    this.el.showPopover();
+  }
+  hide() {
+    this.el.hidePopover();
+  }
+};
+var popoverable_default = Popoverable;
+
+// src/index.ts
 function locus(Alpine) {
+  Alpine.magic("locus", () => {
+    return {
+      popoverable: (options) => {
+        return new popoverable_default(options);
+      }
+    };
+  });
   Alpine.directive("locus", (el, {expression, value, modifiers}, {Alpine: Alpine2, effect, evaluate}) => {
     let reference = evaluate(expression);
     if (!reference)
