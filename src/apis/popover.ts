@@ -1,6 +1,6 @@
 import { PopoverableOptions } from "../types";
 
-export default class Popoverable {
+export default class Popover {
     el: HTMLElement
     state: boolean = false
     nestFor: string | undefined = undefined;

@@ -1,6 +1,6 @@
 import { AnchorableOptions, PopoverableOptions } from "../types";
 
-export default class Anchorable {
+export default class Anchor {
     anchor: HTMLElement
     el: HTMLElement
     state: boolean = false

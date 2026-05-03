@@ -1890,8 +1890,8 @@ __export(exports, {
 // src/index.ts
 var import_dom = __toModule(require_floating_ui_dom_umd());
 
-// src/behaviours/popoverable.ts
-var Popoverable = class {
+// src/apis/popover.ts
+var Popover = class {
   constructor({el, nestedFor = void 0}) {
     this.state = false;
     this.nestFor = void 0;
@@ -1914,10 +1914,10 @@ var Popoverable = class {
     this.el.hidePopover();
   }
 };
-var popoverable_default = Popoverable;
+var popover_default = Popover;
 
-// src/behaviours/anchorable.ts
-var Anchorable = class {
+// src/apis/anchor.ts
+var Anchor = class {
   constructor({el, anchor, options}) {
     this.state = false;
     this.el = el;
@@ -1927,17 +1927,19 @@ var Anchorable = class {
   handlePositioning() {
   }
 };
-var anchorable_default = Anchorable;
+var anchor_default = Anchor;
 
 // src/index.ts
 function locus(Alpine) {
   Alpine.magic("locus", () => {
     return {
       popover: (options) => {
-        return new popoverable_default(options);
+        return new popover_default(options);
       },
       anchor: (options) => {
-        return new anchorable_default(options);
+        return new anchor_default(options);
+      },
+      animate: ({strategy} = {}) => {
       }
     };
   });
