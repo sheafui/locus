@@ -403,14 +403,14 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
         const min$1 = minPadding;
         const max2 = clientSize - arrowDimensions[length] - maxPadding;
         const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
-        const offset2 = clamp(min$1, center, max2);
-        const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset2 && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+        const offset3 = clamp(min$1, center, max2);
+        const shouldAddOffset = !middlewareData.arrow && getAlignment(placement) != null && center !== offset3 && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
         const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max2 : 0;
         return {
           [axis]: coords[axis] + alignmentOffset,
           data: {
-            [axis]: offset2,
-            centerOffset: center - offset2 - alignmentOffset,
+            [axis]: offset3,
+            centerOffset: center - offset3 - alignmentOffset,
             ...shouldAddOffset && {
               alignmentOffset
             }
@@ -504,7 +504,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
         }
       };
     };
-    const flip = function(options) {
+    const flip2 = function(options) {
       if (options === void 0) {
         options = {};
       }
@@ -826,7 +826,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
         y: crossAxis * crossAxisMulti
       };
     }
-    const offset = function(options) {
+    const offset2 = function(options) {
       if (options === void 0) {
         options = 0;
       }
@@ -856,7 +856,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
         }
       };
     };
-    const shift = function(options) {
+    const shift2 = function(options) {
       if (options === void 0) {
         options = {};
       }
@@ -944,7 +944,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
             middlewareData
           } = state;
           const {
-            offset: offset2 = 0,
+            offset: offset3 = 0,
             mainAxis: checkMainAxis = true,
             crossAxis: checkCrossAxis = true
           } = evaluate(options, state);
@@ -956,7 +956,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
           const mainAxis = getOppositeAxis(crossAxis);
           let mainAxisCoord = coords[mainAxis];
           let crossAxisCoord = coords[crossAxis];
-          const rawOffset = evaluate(offset2, state);
+          const rawOffset = evaluate(offset3, state);
           const computedOffset = typeof rawOffset === "number" ? {
             mainAxis: rawOffset,
             crossAxis: 0
@@ -994,7 +994,7 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
         }
       };
     };
-    const size = function(options) {
+    const size2 = function(options) {
       if (options === void 0) {
         options = {};
       }
@@ -1076,14 +1076,14 @@ var require_floating_ui_core_umd = __commonJS((exports2, module2) => {
     exports3.autoPlacement = autoPlacement;
     exports3.computePosition = computePosition2;
     exports3.detectOverflow = detectOverflow;
-    exports3.flip = flip;
+    exports3.flip = flip2;
     exports3.hide = hide;
     exports3.inline = inline;
     exports3.limitShift = limitShift;
-    exports3.offset = offset;
+    exports3.offset = offset2;
     exports3.rectToClientRect = rectToClientRect;
-    exports3.shift = shift;
-    exports3.size = size;
+    exports3.shift = shift2;
+    exports3.size = size2;
   });
 });
 
@@ -1840,11 +1840,11 @@ var require_floating_ui_dom_umd = __commonJS((exports2, module2) => {
       };
     }
     const detectOverflow = core.detectOverflow;
-    const offset = core.offset;
+    const offset2 = core.offset;
     const autoPlacement = core.autoPlacement;
-    const shift = core.shift;
-    const flip = core.flip;
-    const size = core.size;
+    const shift2 = core.shift;
+    const flip2 = core.flip;
+    const size2 = core.size;
     const hide = core.hide;
     const arrow = core.arrow;
     const inline = core.inline;
@@ -1869,15 +1869,15 @@ var require_floating_ui_dom_umd = __commonJS((exports2, module2) => {
     exports3.autoUpdate = autoUpdate;
     exports3.computePosition = computePosition2;
     exports3.detectOverflow = detectOverflow;
-    exports3.flip = flip;
+    exports3.flip = flip2;
     exports3.getOverflowAncestors = getOverflowAncestors;
     exports3.hide = hide;
     exports3.inline = inline;
     exports3.limitShift = limitShift;
-    exports3.offset = offset;
+    exports3.offset = offset2;
     exports3.platform = platform;
-    exports3.shift = shift;
-    exports3.size = size;
+    exports3.shift = shift2;
+    exports3.size = size2;
   });
 });
 
@@ -1894,8 +1894,32 @@ function locus(Alpine) {
     let reference = evaluate(expression);
     if (!reference)
       throw "Alpine: no element provided to x-anchor...";
+    let matchWidth = false;
+    let gap = 4;
+    let offsetValue = 4;
     if (value == "float") {
-      (0, import_dom.computePosition)(reference, el, {});
+      (0, import_dom.computePosition)(reference, el, {
+        middleware: [
+          (0, import_dom.flip)(),
+          (0, import_dom.shift)({padding: 5, crossAxis: true}),
+          (0, import_dom.offset)({
+            mainAxis: Number(gap),
+            alignmentAxis: Number(offsetValue)
+          }),
+          (0, import_dom.size)({
+            apply({rects, elements}) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`
+              });
+            }
+          })
+        ]
+      }).then(({x, y}) => {
+        Object.assign(reference.style, {
+          x: `${x}px`,
+          y: `${y}px`
+        });
+      });
     }
   });
 }
