@@ -1,4 +1,30 @@
 (() => {
+  // src/apis/popover.ts
+  var Popover = class {
+    constructor({el, nestedFor = void 0}) {
+      this.state = false;
+      this.nestFor = void 0;
+      this.el = el;
+      this.nestFor = nestedFor;
+    }
+    setState(value) {
+      value ? this.show() : this.hide();
+    }
+    getState() {
+      return this.state;
+    }
+    toggle() {
+      this.el.togglePopover();
+    }
+    show() {
+      this.el.showPopover();
+    }
+    hide() {
+      this.el.hidePopover();
+    }
+  };
+  var popover_default = Popover;
+
   // node_modules/@floating-ui/utils/dist/floating-ui.utils.esm.js
   var min = Math.min;
   var max = Math.max;
@@ -1267,32 +1293,6 @@
     });
   };
 
-  // src/apis/popover.ts
-  var Popover = class {
-    constructor({el, nestedFor = void 0}) {
-      this.state = false;
-      this.nestFor = void 0;
-      this.el = el;
-      this.nestFor = nestedFor;
-    }
-    setState(value) {
-      value ? this.show() : this.hide();
-    }
-    getState() {
-      return this.state;
-    }
-    toggle() {
-      this.el.togglePopover();
-    }
-    show() {
-      this.el.showPopover();
-    }
-    hide() {
-      this.el.hidePopover();
-    }
-  };
-  var popover_default = Popover;
-
   // src/apis/anchor.ts
   var Anchor = class {
     constructor({el, anchor, options}) {
@@ -1300,11 +1300,38 @@
       this.el = el;
       this.anchor = anchor;
       this.options = options;
-      this.init();
+      queueMicrotask(() => this.init());
     }
     init() {
+      this.validatePlacement();
+      computePosition2(this.anchor, this.el, {
+        middleware: [
+          flip2(),
+          shift2({padding: 5, crossAxis: true}),
+          offset2({
+            mainAxis: Number(this.options.gap),
+            alignmentAxis: Number(this.options.offset)
+          }),
+          size2({
+            apply({rects, elements}) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`
+              });
+            }
+          })
+        ]
+      }).then(({x, y}) => {
+        Object.assign(this.anchor.style, {
+          x: `${x}px`,
+          y: `${y}px`
+        });
+      });
     }
-    handlePositioning() {
+    validatePlacement() {
+      let exists = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"].includes(this.options.placement);
+      if (!exists) {
+        console.warn(String.raw`invalid given placement string "${this.options.placement}"`);
+      }
     }
   };
   var anchor_default = Anchor;
@@ -1331,28 +1358,6 @@
       let gap = 4;
       let offsetValue = 4;
       if (value == "float") {
-        computePosition2(reference, el, {
-          middleware: [
-            flip2(),
-            shift2({padding: 5, crossAxis: true}),
-            offset2({
-              mainAxis: Number(gap),
-              alignmentAxis: Number(offsetValue)
-            }),
-            size2({
-              apply({rects, elements}) {
-                Object.assign(elements.floating.style, {
-                  width: `${rects.reference.width}px`
-                });
-              }
-            })
-          ]
-        }).then(({x, y}) => {
-          Object.assign(reference.style, {
-            x: `${x}px`,
-            y: `${y}px`
-          });
-        });
       }
     });
   }

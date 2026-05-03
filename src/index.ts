@@ -16,7 +16,7 @@ export default function locus(Alpine: Alpine): void {
                 return new Anchor(options)
             },
             animate: ({ strategy }: { strategy?: 'fade' | 'scale' } = {}) => { 
-                
+
             }
             // other mixins...
         });
@@ -32,28 +32,7 @@ export default function locus(Alpine: Alpine): void {
         let offsetValue = 4;
 
         if (value == 'float') {
-            computePosition(reference, el, {
-                middleware: [
-                    flip(),
-                    shift({ padding: 5, crossAxis: true }),
-                    offset({
-                        mainAxis: Number(gap),
-                        alignmentAxis: Number(offsetValue),
-                    }),
-                    size({
-                        apply({ rects, elements }) {
-                            Object.assign(elements.floating.style, {
-                                width: `${rects.reference.width}px`,
-                            });
-                        },
-                    }),
-                ]
-            }).then(({ x, y }) => {
-                Object.assign(reference.style, {
-                    x: `${x}px`,
-                    y: `${y}px`
-                })
-            })
+            
         }
     });
 }

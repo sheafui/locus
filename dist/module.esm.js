@@ -1877,9 +1877,6 @@ var require_floating_ui_dom_umd = __commonJS((exports, module) => {
   });
 });
 
-// src/index.ts
-var import_dom = __toModule(require_floating_ui_dom_umd());
-
 // src/apis/popover.ts
 var Popover = class {
   constructor({el, nestedFor = void 0}) {
@@ -1907,17 +1904,45 @@ var Popover = class {
 var popover_default = Popover;
 
 // src/apis/anchor.ts
+var import_dom = __toModule(require_floating_ui_dom_umd());
 var Anchor = class {
   constructor({el, anchor, options}) {
     this.state = false;
     this.el = el;
     this.anchor = anchor;
     this.options = options;
-    this.init();
+    queueMicrotask(() => this.init());
   }
   init() {
+    this.validatePlacement();
+    (0, import_dom.computePosition)(this.anchor, this.el, {
+      middleware: [
+        (0, import_dom.flip)(),
+        (0, import_dom.shift)({padding: 5, crossAxis: true}),
+        (0, import_dom.offset)({
+          mainAxis: Number(this.options.gap),
+          alignmentAxis: Number(this.options.offset)
+        }),
+        (0, import_dom.size)({
+          apply({rects, elements}) {
+            Object.assign(elements.floating.style, {
+              width: `${rects.reference.width}px`
+            });
+          }
+        })
+      ]
+    }).then(({x, y}) => {
+      Object.assign(this.anchor.style, {
+        x: `${x}px`,
+        y: `${y}px`
+      });
+    });
   }
-  handlePositioning() {
+  validatePlacement() {
+    let exists = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"].includes(this.options.placement);
+    if (!exists) {
+      console.warn(String.raw`invalid given placement string "${this.options.placement}"`);
+    }
   }
 };
 var anchor_default = Anchor;
@@ -1944,28 +1969,6 @@ function locus(Alpine) {
     let gap = 4;
     let offsetValue = 4;
     if (value == "float") {
-      (0, import_dom.computePosition)(reference, el, {
-        middleware: [
-          (0, import_dom.flip)(),
-          (0, import_dom.shift)({padding: 5, crossAxis: true}),
-          (0, import_dom.offset)({
-            mainAxis: Number(gap),
-            alignmentAxis: Number(offsetValue)
-          }),
-          (0, import_dom.size)({
-            apply({rects, elements}) {
-              Object.assign(elements.floating.style, {
-                width: `${rects.reference.width}px`
-              });
-            }
-          })
-        ]
-      }).then(({x, y}) => {
-        Object.assign(reference.style, {
-          x: `${x}px`,
-          y: `${y}px`
-        });
-      });
     }
   });
 }
