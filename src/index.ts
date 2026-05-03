@@ -4,7 +4,7 @@ import { computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 
 export default function locus(Alpine: Alpine): void {
 
-    Alpine.magic('locus',())
+    // Alpine.magic('locus',())
     Alpine.directive('locus', (
         el: AlpineType.ElementWithXAttributes,
         { expression, value, modifiers }: AlpineType.DirectiveData,
