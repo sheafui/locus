@@ -1,27 +1,43 @@
 {
-  "name": "locus",
-  "version": "1.0.0",
-  "description": "SheafUI anchoring primitive",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sheafui/locus.git"
-  },
-  "keywords": [
-    "sheafUI",
-    "anchor",
-    "floating-ui"
-  ],
-  "author": "charrafi mohamed",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sheafui/locus/issues"
-  },
-  "homepage": "https://github.com/sheafui/locus#readme",
-  "dependencies": {
-    "typescript": "^6.0.3"
-  }
+    "name": "locus",
+    "version": "1.0.0",
+    "description": "SheafUI anchoring primitive",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sheafui/locus.git"
+    },
+    "keywords": [
+        "sheafUI",
+        "anchor",
+        "floating-ui"
+    ],
+    "author": "charrafi mohamed",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/sheafui/locus/issues"
+    },
+    "homepage": "https://github.com/sheafui/locus#readme",
+    "dependencies": {
+        "typescript": "^6.0.3",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/alpinejs": "^3.13.11",
+        "@types/node": "^25.0.3",
+        "@vitest/ui": "^4.0.18",
+        "brotli-size": "^4.0.0",
+        "esbuild": "^0.8.39",
+        "eslint": "^9.39.2",
+        "eslint-config-xo": "^0.49.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-standard": "^4.1.0",
+        "jsdom": "^28.0.0",
+        "lint-staged": "^10.5.4",
+        "vitest": "^4.0.18"
+    }
 }
