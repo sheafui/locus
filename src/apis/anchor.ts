@@ -8,16 +8,17 @@ export default class Anchor {
     state: boolean = false
     options: AnchorOptions['options']
 
-    constructor({ el, anchor, options }: AnchorOptions) {
-        this.el = el;
+    constructor({ anchor, el, options }: AnchorOptions) {
         this.anchor = anchor;
+        this.el = el;
         this.options = options;
 
         queueMicrotask(() => this.init());
     }
 
     init() {
-        this.validatePlacement();
+        if (this.options?.placement) this.validatePlacement();
+
         computePosition(this.anchor, this.el, {
             middleware: [
                 flip(),
@@ -26,26 +27,22 @@ export default class Anchor {
                     mainAxis: Number(this.options.gap),
                     alignmentAxis: Number(this.options.offset),
                 }),
-                size({
-                    apply({ rects, elements }) {
-                        Object.assign(elements.floating.style, {
-                            width: `${rects.reference.width}px`,
-                        });
-                    },
-                }),
-            ]
+            ],
         }).then(({ x, y }) => {
+            console.log(this.anchor);
             Object.assign(this.anchor.style, {
                 position: 'absolute', inset: `${y}px auto auto ${x}px`
-            })
+            });
         });
+
+
     }
 
     validatePlacement() {
-        let exists = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'].includes(this.options.placement)
+        let exists = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'].includes(this.options?.placement)
 
         if (!exists) {
-            console.warn(String.raw`invalid given placement string "${this.options.placement}"`)
+            console.warn(String.raw`invalid given placement string "${this.options?.placement}"`)
         }
     }
 }

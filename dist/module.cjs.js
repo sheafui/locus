@@ -1916,15 +1916,17 @@ var popover_default = Popover;
 // src/apis/anchor.ts
 var import_dom = __toModule(require_floating_ui_dom_umd());
 var Anchor = class {
-  constructor({el, anchor, options}) {
+  constructor({anchor, el, options}) {
     this.state = false;
-    this.el = el;
     this.anchor = anchor;
+    this.el = el;
     this.options = options;
     queueMicrotask(() => this.init());
   }
   init() {
-    this.validatePlacement();
+    var _a;
+    if ((_a = this.options) == null ? void 0 : _a.placement)
+      this.validatePlacement();
     (0, import_dom.computePosition)(this.anchor, this.el, {
       middleware: [
         (0, import_dom.flip)(),
@@ -1932,16 +1934,10 @@ var Anchor = class {
         (0, import_dom.offset)({
           mainAxis: Number(this.options.gap),
           alignmentAxis: Number(this.options.offset)
-        }),
-        (0, import_dom.size)({
-          apply({rects, elements}) {
-            Object.assign(elements.floating.style, {
-              width: `${rects.reference.width}px`
-            });
-          }
         })
       ]
     }).then(({x, y}) => {
+      console.log(this.anchor);
       Object.assign(this.anchor.style, {
         position: "absolute",
         inset: `${y}px auto auto ${x}px`
@@ -1949,9 +1945,10 @@ var Anchor = class {
     });
   }
   validatePlacement() {
-    let exists = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"].includes(this.options.placement);
+    var _a, _b;
+    let exists = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"].includes((_a = this.options) == null ? void 0 : _a.placement);
     if (!exists) {
-      console.warn(String.raw`invalid given placement string "${this.options.placement}"`);
+      console.warn(String.raw`invalid given placement string "${(_b = this.options) == null ? void 0 : _b.placement}"`);
     }
   }
 };
