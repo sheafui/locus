@@ -1,0 +1,27 @@
+{
+  "name": "locus",
+  "version": "1.0.0",
+  "description": "SheafUI anchoring primitive",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheafui/locus.git"
+  },
+  "keywords": [
+    "sheafUI",
+    "anchor",
+    "floating-ui"
+  ],
+  "author": "charrafi mohamed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sheafui/locus/issues"
+  },
+  "homepage": "https://github.com/sheafui/locus#readme",
+  "dependencies": {
+    "typescript": "^6.0.3"
+  }
+}
