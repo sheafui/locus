@@ -12,6 +12,8 @@ export default function locus(Alpine: Alpine): void {
                 return new Popover(options);
             },
             anchor: (options: AnchorOptions): Anchor => {
+                console.log(options);
+
                 return new Anchor(options)
             },
             animate: ({ strategy }: { strategy?: 'fade' | 'scale' } = {}) => { 

@@ -1950,6 +1950,7 @@ function locus(Alpine) {
         return new popover_default(options);
       },
       anchor: (options) => {
+        console.log(options);
         return new anchor_default(options);
       },
       animate: ({strategy} = {}) => {

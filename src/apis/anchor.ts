@@ -30,6 +30,7 @@ export default class Anchor {
             ],
         }).then(({ x, y }) => {
             console.log(this.anchor);
+            
             Object.assign(this.anchor.style, {
                 position: 'absolute', inset: `${y}px auto auto ${x}px`
             });
