@@ -1906,12 +1906,28 @@ var Popoverable = class {
 };
 var popoverable_default = Popoverable;
 
+// src/behaviours/anchorable.ts
+var Anchorable = class {
+  constructor({el, anchor, options}) {
+    this.state = false;
+    this.el = el;
+    this.anchor = anchor;
+    this.options = options;
+  }
+  handlePositioning() {
+  }
+};
+var anchorable_default = Anchorable;
+
 // src/index.ts
 function locus(Alpine) {
   Alpine.magic("locus", () => {
     return {
-      popoverable: (options) => {
+      popover: (options) => {
         return new popoverable_default(options);
+      },
+      anchor: (options) => {
+        return new anchorable_default(options);
       }
     };
   });

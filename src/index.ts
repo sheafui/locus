@@ -2,16 +2,21 @@ import type { Alpine } from "alpinejs";
 import { default as AlpineType } from "alpinejs";
 import { computePosition, flip, offset, shift, size } from '@floating-ui/dom';
 import Popoverable from "./behaviours/popoverable";
-import { PopoverableOptions } from "./types";
+import { AnchorableOptions, PopoverableOptions } from "./types";
+import Anchorable from "./behaviours/anchorable";
 
 export default function locus(Alpine: Alpine): void {
 
     Alpine.magic('locus', () => {
         return ({
-            popoverable: (options: PopoverableOptions): Popoverable => {
+            popover: (options: PopoverableOptions): Popoverable => {
                 return new Popoverable(options);
+            },
+            anchor: (options: AnchorableOptions) => {
+                return new Anchorable(options)
             }
-        })
+            // other mixins...
+        });
     });
 
     Alpine.directive('locus', (el: AlpineType.ElementWithXAttributes, { expression, value, modifiers }: AlpineType.DirectiveData, { Alpine, effect, evaluate }: AlpineType.DirectiveUtilities) => {
