@@ -1,49 +1,58 @@
-import { initTree } from "alpinejs";
-import { AnchorOptions, PopoverOptions } from "../types";
+import { AnchorOptions } from "../types";
 import { computePosition, flip, offset, shift, size } from "@floating-ui/dom";
 
 export default class Anchor {
     anchor: HTMLElement
     el: HTMLElement
-    state: boolean = false
-    options: AnchorOptions['options']
+    gap: number
+    offset: number
+    placement: string
+    matchWidth: boolean
 
-    constructor({ anchor, el, options }: AnchorOptions) {
-        this.anchor = anchor;
-        this.el = el;
-        this.options = options;
+    constructor({ anchor, el, gap = 4, offset = 0, placement = 'bottom-start', matchWidth = false }: AnchorOptions) {
+        this.anchor = anchor
+        this.el = el
+        this.gap = gap
+        this.offset = offset
+        this.placement = placement
+        this.matchWidth = matchWidth
 
-        queueMicrotask(() => this.init());
+        queueMicrotask(() => this.init())
     }
 
     init() {
-        if (this.options?.placement) this.validatePlacement();
+        this.validatePlacement()
 
         computePosition(this.anchor, this.el, {
+            placement: this.placement as any,
             middleware: [
                 flip(),
                 shift({ padding: 5, crossAxis: true }),
                 offset({
-                    mainAxis: Number(this.options.gap),
-                    alignmentAxis: Number(this.options.offset),
+                    mainAxis: this.gap,
+                    alignmentAxis: this.offset,
                 }),
-            ],
+                this.matchWidth ? size({
+                    apply({ rects, elements }) {
+                        Object.assign(elements.floating.style, {
+                            width: `${rects.reference.width}px`,
+                        })
+                    },
+                }) : undefined,
+            ].filter(Boolean),
         }).then(({ x, y }) => {
-            console.log(this.anchor);
-            
-            Object.assign(this.anchor.style, {
-                position: 'absolute', inset: `${y}px auto auto ${x}px`
-            });
-        });
-
-
+            Object.assign(this.el.style, {
+                position: 'absolute',
+                inset: `${y}px auto auto ${x}px`
+            })
+        })
     }
 
     validatePlacement() {
-        let exists = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end'].includes(this.options?.placement)
+        const valid = ['top', 'top-start', 'top-end', 'right', 'right-start', 'right-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end']
 
-        if (!exists) {
-            console.warn(String.raw`invalid given placement string "${this.options?.placement}"`)
+        if (!valid.includes(this.placement)) {
+            console.warn(`Locus: invalid placement "${this.placement}"`)
         }
     }
 }

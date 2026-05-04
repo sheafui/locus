@@ -1,8 +1,13 @@
-
-export type PopoverOptions = { el: HTMLElement, nestedFor: undefined }
+export type PopoverOptions = {
+    el: HTMLElement
+    nestedFor?: string
+}
 
 export interface AnchorOptions {
-    anchor: HTMLElement,
-    el: HTMLElement,
-    options: { gap: number, offset: number, placement: string, parentWidth: boolean }
-} 
+    anchor: HTMLElement
+    el: HTMLElement
+    gap?: number
+    offset?: number
+    placement?: string
+    matchWidth?: boolean
+}

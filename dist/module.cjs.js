@@ -1916,39 +1916,45 @@ var popover_default = Popover;
 // src/apis/anchor.ts
 var import_dom = __toModule(require_floating_ui_dom_umd());
 var Anchor = class {
-  constructor({anchor, el, options}) {
-    this.state = false;
+  constructor({anchor, el, gap = 4, offset: offset2 = 0, placement = "bottom-start", matchWidth = false}) {
     this.anchor = anchor;
     this.el = el;
-    this.options = options;
+    this.gap = gap;
+    this.offset = offset2;
+    this.placement = placement;
+    this.matchWidth = matchWidth;
     queueMicrotask(() => this.init());
   }
   init() {
-    var _a;
-    if ((_a = this.options) == null ? void 0 : _a.placement)
-      this.validatePlacement();
+    this.validatePlacement();
     (0, import_dom.computePosition)(this.anchor, this.el, {
+      placement: this.placement,
       middleware: [
         (0, import_dom.flip)(),
         (0, import_dom.shift)({padding: 5, crossAxis: true}),
         (0, import_dom.offset)({
-          mainAxis: Number(this.options.gap),
-          alignmentAxis: Number(this.options.offset)
-        })
-      ]
+          mainAxis: this.gap,
+          alignmentAxis: this.offset
+        }),
+        this.matchWidth ? (0, import_dom.size)({
+          apply({rects, elements}) {
+            Object.assign(elements.floating.style, {
+              width: `${rects.reference.width}px`
+            });
+          }
+        }) : void 0
+      ].filter(Boolean)
     }).then(({x, y}) => {
-      console.log(this.anchor);
-      Object.assign(this.anchor.style, {
+      Object.assign(this.el.style, {
         position: "absolute",
         inset: `${y}px auto auto ${x}px`
       });
     });
   }
   validatePlacement() {
-    var _a, _b;
-    let exists = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"].includes((_a = this.options) == null ? void 0 : _a.placement);
-    if (!exists) {
-      console.warn(String.raw`invalid given placement string "${(_b = this.options) == null ? void 0 : _b.placement}"`);
+    const valid = ["top", "top-start", "top-end", "right", "right-start", "right-end", "bottom", "bottom-start", "bottom-end", "left", "left-start", "left-end"];
+    if (!valid.includes(this.placement)) {
+      console.warn(`Locus: invalid placement "${this.placement}"`);
     }
   }
 };
