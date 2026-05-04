@@ -599,84 +599,6 @@
       }
     };
   };
-  var size = function(options) {
-    if (options === void 0) {
-      options = {};
-    }
-    return {
-      name: "size",
-      options,
-      async fn(state) {
-        var _state$middlewareData, _state$middlewareData2;
-        const {
-          placement,
-          rects,
-          platform: platform2,
-          elements
-        } = state;
-        const {
-          apply = () => {
-          },
-          ...detectOverflowOptions
-        } = evaluate(options, state);
-        const overflow = await platform2.detectOverflow(state, detectOverflowOptions);
-        const side = getSide(placement);
-        const alignment = getAlignment(placement);
-        const isYAxis = getSideAxis(placement) === "y";
-        const {
-          width,
-          height
-        } = rects.floating;
-        let heightSide;
-        let widthSide;
-        if (side === "top" || side === "bottom") {
-          heightSide = side;
-          widthSide = alignment === (await (platform2.isRTL == null ? void 0 : platform2.isRTL(elements.floating)) ? "start" : "end") ? "left" : "right";
-        } else {
-          widthSide = side;
-          heightSide = alignment === "end" ? "top" : "bottom";
-        }
-        const maximumClippingHeight = height - overflow.top - overflow.bottom;
-        const maximumClippingWidth = width - overflow.left - overflow.right;
-        const overflowAvailableHeight = min(height - overflow[heightSide], maximumClippingHeight);
-        const overflowAvailableWidth = min(width - overflow[widthSide], maximumClippingWidth);
-        const noShift = !state.middlewareData.shift;
-        let availableHeight = overflowAvailableHeight;
-        let availableWidth = overflowAvailableWidth;
-        if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
-          availableWidth = maximumClippingWidth;
-        }
-        if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
-          availableHeight = maximumClippingHeight;
-        }
-        if (noShift && !alignment) {
-          const xMin = max(overflow.left, 0);
-          const xMax = max(overflow.right, 0);
-          const yMin = max(overflow.top, 0);
-          const yMax = max(overflow.bottom, 0);
-          if (isYAxis) {
-            availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
-          } else {
-            availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
-          }
-        }
-        await apply({
-          ...state,
-          availableWidth,
-          availableHeight
-        });
-        const nextDimensions = await platform2.getDimensions(elements.floating);
-        if (width !== nextDimensions.width || height !== nextDimensions.height) {
-          return {
-            reset: {
-              rects: true
-            }
-          };
-        }
-        return {};
-      }
-    };
-  };
 
   // node_modules/@floating-ui/utils/dom/floating-ui.utils.dom.esm.js
   function hasWindow() {
@@ -1276,7 +1198,6 @@
   var offset2 = offset;
   var shift2 = shift;
   var flip2 = flip;
-  var size2 = size;
   var computePosition2 = (reference, floating, options) => {
     const cache = new Map();
     const mergedOptions = {
@@ -1295,13 +1216,12 @@
 
   // src/apis/anchor.ts
   var Anchor = class {
-    constructor({anchor, el, gap = 4, offset: offset3 = 0, placement = "bottom-start", matchWidth = false}) {
+    constructor({anchor, el, gap = 4, offset: offset3 = 0, placement = "bottom-start"}) {
       this.anchor = anchor;
       this.el = el;
       this.gap = gap;
       this.offset = offset3;
       this.placement = placement;
-      this.matchWidth = matchWidth;
       queueMicrotask(() => this.init());
     }
     init() {
@@ -1314,14 +1234,7 @@
           offset2({
             mainAxis: this.gap,
             alignmentAxis: this.offset
-          }),
-          this.matchWidth ? size2({
-            apply({rects, elements}) {
-              Object.assign(elements.floating.style, {
-                width: `${rects.reference.width}px`
-              });
-            }
-          }) : void 0
+          })
         ].filter(Boolean)
       }).then(({x, y}) => {
         Object.assign(this.el.style, {

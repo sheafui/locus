@@ -7,15 +7,13 @@ export default class Anchor {
     gap: number
     offset: number
     placement: string
-    matchWidth: boolean
 
-    constructor({ anchor, el, gap = 4, offset = 0, placement = 'bottom-start', matchWidth = false }: AnchorOptions) {
+    constructor({ anchor, el, gap = 4, offset = 0, placement = 'bottom-start'}: AnchorOptions) {
         this.anchor = anchor
         this.el = el
         this.gap = gap
         this.offset = offset
         this.placement = placement
-        this.matchWidth = matchWidth
 
         queueMicrotask(() => this.init())
     }
@@ -32,13 +30,6 @@ export default class Anchor {
                     mainAxis: this.gap,
                     alignmentAxis: this.offset,
                 }),
-                this.matchWidth ? size({
-                    apply({ rects, elements }) {
-                        Object.assign(elements.floating.style, {
-                            width: `${rects.reference.width}px`,
-                        })
-                    },
-                }) : undefined,
             ].filter(Boolean),
         }).then(({ x, y }) => {
             Object.assign(this.el.style, {

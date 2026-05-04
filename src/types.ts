@@ -9,5 +9,4 @@ export interface AnchorOptions {
     gap?: number
     offset?: number
     placement?: string
-    matchWidth?: boolean
 }

@@ -1916,13 +1916,12 @@ var popover_default = Popover;
 // src/apis/anchor.ts
 var import_dom = __toModule(require_floating_ui_dom_umd());
 var Anchor = class {
-  constructor({anchor, el, gap = 4, offset: offset2 = 0, placement = "bottom-start", matchWidth = false}) {
+  constructor({anchor, el, gap = 4, offset: offset2 = 0, placement = "bottom-start"}) {
     this.anchor = anchor;
     this.el = el;
     this.gap = gap;
     this.offset = offset2;
     this.placement = placement;
-    this.matchWidth = matchWidth;
     queueMicrotask(() => this.init());
   }
   init() {
@@ -1935,14 +1934,7 @@ var Anchor = class {
         (0, import_dom.offset)({
           mainAxis: this.gap,
           alignmentAxis: this.offset
-        }),
-        this.matchWidth ? (0, import_dom.size)({
-          apply({rects, elements}) {
-            Object.assign(elements.floating.style, {
-              width: `${rects.reference.width}px`
-            });
-          }
-        }) : void 0
+        })
       ].filter(Boolean)
     }).then(({x, y}) => {
       Object.assign(this.el.style, {
