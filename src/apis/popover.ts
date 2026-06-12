@@ -29,6 +29,4 @@ export default class Popover {
     hide() {
         this.el.hidePopover()
     }
-
-
 }
